@@ -1,0 +1,82 @@
+{
+  "name": "deliver-awesome-snippet",
+  "displayName": "Deliver Awesome Snippet",
+  "description": "赋能任意代码片段生成,同步物料款",
+  "publisher": "gavin",
+  "icon": "resource/logo.png",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GavenXia/deliver-awesome-snippet"
+  },
+  "engines": {
+    "vscode": "^1.54.0"
+  },
+  "categories": [
+    "Snippets"
+  ],
+  "keywords": [
+    "code",
+    "selection",
+    "generate",
+    "json",
+    "prefix",
+    "snippet"
+  ],
+  "activationEvents": [
+    "onCommand: deliver-awesome-snippet.create-snippet"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "keybindings": [
+      {
+        "command": "deliver-awesome-snippet.create-snippet",
+        "key": "ctrl+shift+C",
+        "mac": "cmd+shift+C",
+        "when": "editorHasSelection"
+      }
+    ],
+    "commands": [
+      {
+        "command": "deliver-awesome-snippet.create-snippet",
+        "title": "新增代码片段"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "deliver-awesome-snippet.create-snippet",
+          "when": "editorHasSelection"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.54.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "@vscode/test-electron": "^2.3.4",
+    "@vscode/vsce": "^2.21.1",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
