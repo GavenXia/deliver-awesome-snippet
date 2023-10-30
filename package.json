@@ -25,13 +25,67 @@
     "snippet"
   ],
   "activationEvents": [
-    "onCommand: deliver-awesome-snippet.create-snippet"
+    "onCommand: deliverAwesomeSnippet.generateSnippet"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Deliver Awesome Snippet",
+      "properties": {
+        "deliverAwesomeSnippet.login.username": {
+          "type": "string",
+          "default": "",
+          "description": "物料账号用户名"
+        },
+        "deliverAwesomeSnippet.login.password": {
+          "type": "string",
+          "default": "",
+          "contentMediaType": "password",
+          "description": "物料账号密码"
+        },
+        "deliverAwesomeSnippet.api.origin": {
+          "type": "string",
+          "default": "http://dev.xmhreal.top.com",
+          "description": "物料服务端域名, eg: 'http://www.xxx.com'"
+        }
+      }
+    },
+    "viewsWelcome": [
+      {
+        "view": "localSnippet",
+        "contents": "初始化中，或没有找到代码片段\n[加载代码片段](command:deliverAwesomeSnippet.loadLocalSnippet)"
+      },
+      {
+        "view": "localSnippet",
+        "contents": "初始化中，或没有登录\n[登录](command:deliverAwesomeSnippet.login)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codeSnippetContainer",
+          "title": "代码片段",
+          "icon": "resource/logo.png"
+        }
+      ]
+    },
+    "views": {
+      "codeSnippetContainer": [
+        {
+          "id": "localSnippet",
+          "name": "本地代码片段",
+          "contextualTitle": "代码片段"
+        },
+        {
+          "id": "remoteSnippet",
+          "name": "远程代码片段",
+          "contextualTitle": "代码片段"
+        }
+      ]
+    },
     "keybindings": [
       {
-        "command": "deliver-awesome-snippet.create-snippet",
+        "command": "deliverAwesomeSnippet.generateSnippet",
         "key": "ctrl+shift+C",
         "mac": "cmd+shift+C",
         "when": "editorHasSelection"
@@ -39,14 +93,59 @@
     ],
     "commands": [
       {
-        "command": "deliver-awesome-snippet.create-snippet",
-        "title": "新增代码片段"
+        "command": "extension.selectItem",
+        "title": "Select Item"
+      },
+      {
+        "command": "deliverAwesomeSnippet.openSnippet",
+        "title": "打开代码片段文件"
+      },
+      {
+        "command": "deliverAwesomeSnippet.generateSnippet",
+        "title": "生成代码片段"
+      },
+      {
+        "command": "deliverAwesomeSnippet.loadLocalSnippet",
+        "title": "加载本地代码片段"
+      },
+      {
+        "command": "deliverAwesomeSnippet.login",
+        "title": "登录物料账号",
+        "icon": "resource/svg/login.svg"
+      },
+      {
+        "command": "deliverAwesomeSnippet.refresh",
+        "title": "刷新",
+        "icon": "resource/svg/refresh.svg"
+      },
+      {
+        "command": "deliverAwesomeSnippet.deleteSnippet",
+        "title": "删除"
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "deliverAwesomeSnippet.refresh",
+          "when": "view == localSnippet",
+          "group": "navigation"
+        },
+        {
+          "command": "deliverAwesomeSnippet.login",
+          "when": "view == remoteSnippet",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "deliverAwesomeSnippet.deleteSnippet",
+          "when": "view == localSnippet && viewItem == snippet",
+          "group": "inline"
+        }
+      ],
       "editor/context": [
         {
-          "command": "deliver-awesome-snippet.create-snippet",
+          "command": "deliverAwesomeSnippet.generateSnippet",
           "when": "editorHasSelection"
         }
       ]
@@ -78,5 +177,10 @@
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.19.4",
+    "@babel/traverse": "^7.19.4",
+    "jsonc-parser": "^3.2.0"
   }
 }
