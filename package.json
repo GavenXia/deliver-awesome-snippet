@@ -56,7 +56,7 @@
         "contents": "初始化中，或没有找到代码片段\n[加载代码片段](command:deliverAwesomeSnippet.loadLocalSnippet)"
       },
       {
-        "view": "localSnippet",
+        "view": "remoteSnippet",
         "contents": "初始化中，或没有登录\n[登录](command:deliverAwesomeSnippet.login)"
       }
     ],
@@ -139,8 +139,7 @@
       "view/item/context": [
         {
           "command": "deliverAwesomeSnippet.deleteSnippet",
-          "when": "view == localSnippet && viewItem == snippet",
-          "group": "inline"
+          "when": "view == localSnippet && viewItem == snippet"
         }
       ],
       "editor/context": [
@@ -179,6 +178,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@babel/generator": "^7.23.0",
     "@babel/parser": "^7.19.4",
     "@babel/traverse": "^7.19.4",
     "jsonc-parser": "^3.2.0"

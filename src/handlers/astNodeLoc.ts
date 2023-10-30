@@ -1,7 +1,7 @@
 /*
  * @Author: xiaminghua xiaminghua@linklogis.com
  * @LastEditors: xiaminghua
- * @LastEditTime: 2023-10-29 22:01:05
+ * @LastEditTime: 2023-10-30 11:11:32
  */
 import traverse from "@babel/traverse";
 import { parse } from "../utils/parse";
@@ -13,7 +13,7 @@ export function getObjectExpressionNodeLoc(
   code: string
 ): AstNode | undefined {
   let node: AstNode | undefined;
-  const wrappedCode = "let b=" + code + ";exports.b = b;";;
+  const wrappedCode = "let b=" + code + ";exports.b = b;";
   const ast = parse(wrappedCode);
   traverse(ast, {
     ObjectExpression: (path) => {
