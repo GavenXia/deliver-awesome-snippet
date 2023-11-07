@@ -1,7 +1,7 @@
 /*
  * @Author: xiaminghua xiaminghua@linklogis.com
  * @LastEditors: xiaminghua
- * @LastEditTime: 2023-10-30 16:21:29
+ * @LastEditTime: 2023-11-07 14:08:54
  */
 import {
   Uri,
@@ -39,7 +39,15 @@ async function deleteCode(code: string, label: string, filePath: string) {
       }
     },
   });
-  const generatorCode = generator(ast).code.slice(8, -15);
+  const formatOptions = {
+    retainLines: true, // 保留原有代码的换行格式
+    compact: false, // 保留原有代码的缩进格式
+    indent: {
+      adjustMultilineComment: true,
+      style: "    ",
+    },
+  };
+  const generatorCode = generator(ast, formatOptions).code.slice(8, -15);
   await fs.writeFileSync(filePath, generatorCode, "utf8");
 }
 

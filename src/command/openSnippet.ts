@@ -1,13 +1,14 @@
 /*
  * @Author: xiaminghua xiaminghua@linklogis.com
  * @LastEditors: xiaminghua
- * @LastEditTime: 2023-10-29 21:58:08
+ * @LastEditTime: 2023-10-31 18:13:40
  */
 import {
   commands,
   Uri,
   window,
   workspace,
+  ViewColumn,
   Position,
   Range,
   TextEditorRevealType,

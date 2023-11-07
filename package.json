@@ -45,7 +45,7 @@
         },
         "deliverAwesomeSnippet.api.origin": {
           "type": "string",
-          "default": "http://dev.xmhreal.top.com",
+          "default": "http://dev.xmhreal.top",
           "description": "物料服务端域名, eg: 'http://www.xxx.com'"
         }
       }
@@ -120,7 +120,23 @@
       },
       {
         "command": "deliverAwesomeSnippet.deleteSnippet",
-        "title": "删除"
+        "title": "删除",
+        "icon": "resource/svg/delete.svg"
+      },
+      {
+        "command": "deliverAwesomeSnippet.uploadSnippet",
+        "title": "上传",
+        "icon": "resource/svg/upload.svg"
+      },
+      {
+        "command": "deliverAwesomeSnippet.downloadSnippet",
+        "title": "下载",
+        "icon": "resource/svg/download.svg"
+      },
+      {
+        "command": "deliverAwesomeSnippet.syncSnippet",
+        "title": "同步",
+        "icon": "resource/svg/sync.svg"
       }
     ],
     "menus": {
@@ -138,8 +154,19 @@
       ],
       "view/item/context": [
         {
+          "command": "deliverAwesomeSnippet.uploadSnippet",
+          "when": "view == localSnippet && viewItem == snippet",
+          "group": "inline"
+        },
+        {
           "command": "deliverAwesomeSnippet.deleteSnippet",
-          "when": "view == localSnippet && viewItem == snippet"
+          "when": "view == localSnippet && viewItem == snippet",
+          "group": "inline"
+        },
+        {
+          "command": "deliverAwesomeSnippet.downloadSnippet",
+          "when": "view == remoteSnippet && viewItem == snippet",
+          "group": "inline"
         }
       ],
       "editor/context": [
@@ -181,6 +208,7 @@
     "@babel/generator": "^7.23.0",
     "@babel/parser": "^7.19.4",
     "@babel/traverse": "^7.19.4",
+    "axios": "^1.6.0",
     "jsonc-parser": "^3.2.0"
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: xiaminghua xiaminghua@linklogis.com
  * @LastEditors: xiaminghua
- * @LastEditTime: 2023-10-29 21:14:23
+ * @LastEditTime: 2023-10-31 11:15:57
  */
 type Snippet = {
   scope?: string;
@@ -22,4 +22,9 @@ type Snippet = {
      column: number;
      index: number;
    };
+ }
+
+ type User = {
+    username: string;
+    token?: string;
  }

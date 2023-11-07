@@ -1,7 +1,7 @@
 /*
  * @Author: xiaminghua xiaminghua@linklogis.com
  * @LastEditors: xiaminghua
- * @LastEditTime: 2023-10-30 00:31:11
+ * @LastEditTime: 2023-11-06 17:16:30
  */
 import * as vscode from 'vscode';
 import * as path from "path";
@@ -17,11 +17,6 @@ class JsonFile extends vscode.TreeItem {
     public readonly filePath: string,
     public readonly children?: any,
     public readonly iconPath?: any,
-      // | string
-      // | {
-      //     light: string;
-      //     dark: string;
-      //   },
     public readonly command?: vscode.Command
   ) {
     super(label, collapsibleState);
@@ -31,7 +26,6 @@ class JsonFile extends vscode.TreeItem {
     this.children = children;
   }
 }
-// TODO： 驱蚊器翁
 export class LocalSnippetProvider implements vscode.TreeDataProvider<JsonFile> {
   private _onDidChangeTreeData: vscode.EventEmitter<JsonFile> =
     new vscode.EventEmitter<JsonFile | undefined>();
@@ -39,7 +33,10 @@ export class LocalSnippetProvider implements vscode.TreeDataProvider<JsonFile> {
     this._onDidChangeTreeData.event;
   private files: JsonFile[];
 
-  constructor(private readonly rootPath: string) {}
+  constructor(
+    private readonly rootPath: string,
+    private readonly context: vscode.ExtensionContext
+  ) {}
 
   getTreeItem(element: JsonFile): vscode.TreeItem {
     return element;
@@ -61,34 +58,13 @@ export class LocalSnippetProvider implements vscode.TreeDataProvider<JsonFile> {
 
   getSnippetKey(element: JsonFile): Thenable<JsonFile[]> {
     const { filePath, children } = element;
-    const iconPath = 
-    // vscode.Uri.file("../../resource/icon/file-light.png");
-    {
-      light:vscode.Uri.file("../../resource/icon/file-light.png"),
-      // path.join(
-      //   __filename,
-      //   "..",
-      //   "..",
-      //   "resources",
-      //   "icon",
-      //   "file-light.png"
-      // ),
-      dark: vscode.Uri.file("../../resource/icon/file-dark.png")
-      // path.join(
-      //   __filename,
-      //   "..",
-      //   "..",
-      //   "resources",
-      //   "icon",
-      //   "file-dark.png"
-      // ),
-    };
+    const iconPath = vscode.ThemeIcon.File;
     const codeSnippetKeys = children.map((key) => {
       return new JsonFile(
         key,
         vscode.TreeItemCollapsibleState.None,
         1,
-        'snippet',
+        "snippet",
         filePath,
         [],
         iconPath,
@@ -103,7 +79,7 @@ export class LocalSnippetProvider implements vscode.TreeDataProvider<JsonFile> {
   }
 
   getSnippetFile(): Thenable<JsonFile[]> {
-    const files =fs
+    const files = fs
       .readdirSync(this.rootPath)
       .filter((file) =>
         [".json", ".code-snippets"].includes(path.extname(file))
@@ -111,16 +87,18 @@ export class LocalSnippetProvider implements vscode.TreeDataProvider<JsonFile> {
       .map((file) => {
         const filePath = path.join(this.rootPath, file);
         const fileContent = fs.readFileSync(filePath, "utf-8");
-        const jsonTree = parseTree(fileContent);
+        const jsonStr = fileContent ? fileContent : '{}';
+        const jsonTree = parseTree(jsonStr);
         const label = path.basename(filePath);
         const children = jsonTree.children.map((property) => {
           return property.children[0].value;
         });
+        this.context.globalState.update(label, children);
         return new JsonFile(
           label,
           vscode.TreeItemCollapsibleState.Collapsed,
           0,
-          'file',
+          "file",
           filePath,
           children,
           vscode.ThemeIcon.Folder
